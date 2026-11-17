@@ -147,7 +147,7 @@ Compare three system prompts on the same user request:
 uv run python scripts/compare_prompts.py
 ```
 
-These scripts require a configured live provider. Generated result files are git-ignored by default; inspect and sanitize them before deliberately publishing evidence.
+These scripts require a configured live provider. Reviewed evaluation, run-log, and prompt-comparison evidence from 17 November 2026 is versioned in this repository. Local secrets, SQLite data, virtual environments, and raw agent logs remain excluded.
 
 ## Project layout
 
@@ -206,7 +206,7 @@ These scripts require a configured live provider. Generated result files are git
 - SQLite uses parameterized SQL.
 - Network calls have timeouts.
 - The OpenAI client retries transient provider errors up to four times using its backoff policy; persistent HTTP 503 responses can still occur during provider-capacity incidents.
-- The OpenAI-compatible client retries transient provider failures up to four times; repeated 503 responses can still occur during Google service-capacity incidents.
+- The OpenAI-compatible client retries transient provider failures up to four times; persistent 503 responses can still occur during Google service-capacity incidents.
 - The agent loop has a configurable maximum step count.
 - Final output is parsed and validated with Pydantic.
 
@@ -221,10 +221,73 @@ These scripts require a configured live provider. Generated result files are git
 
 ## Internship submission checklist
 
-- [ ] Configure Gemini or Ollama and complete a genuine live request.
-- [ ] Run and inspect all 15 live evaluation questions.
-- [ ] Run the three-prompt comparison and add your own observations.
-- [ ] Capture three real provider runs; do not substitute mock output.
+- [x] Configure Gemini and complete a genuine live request using gemini-3.5-flash-lite.
+- [x] Run all 15 live evaluation questions: **15/15 expected-tool checks passed** (tests/results.md).
+- [x] Run the three-prompt comparison and record observations (docs/prompt-comparison-results.md).
+- [x] Capture three real provider runs: weather, calculator, and SQLite notes (logs/live_runs.md).
 - [ ] Record a terminal demonstration with the API key hidden.
-- [x] Publish source code in a public GitHub repository.
+- [x] Publish source code and reviewed evidence in a public GitHub repository.
 - [ ] Submit the repository and demo video URLs through TaskDesk.
+
+## Verified live evidence — 17 November 2026
+
+- **Provider:** Google Gemini OpenAI-compatible API
+- **Model:** gemini-3.5-flash-lite
+- **Local automated tests:** 14 passed on the Windows environment.
+- **Live evaluation:** 15/15 expected-tool selection checks passed; no request errors were recorded. See tests/results.md.
+- **Live tool demonstrations:** weather (get_weather), arithmetic (calculate), and note creation (save_note) completed through the model-driven agent loop. See logs/live_runs.md.
+- **Prompt comparison:** three system prompts were tested against the same BFS/DFS request. See docs/prompt-comparison-results.md.
+
+The 15/15 result measures expected tool selection, not comprehensive factual correctness. Review the recorded answers before relying on them. The screen-recorded demo and TaskDesk submission are still outstanding.
+
+<!-- BEGIN GENERATED LIVE RUN LOGS -->
+## Live provider run logs
+
+> Actual runs against the configured provider. These are live Gemini responses, not offline mock-provider output.
+
+- **Provider:** gemini
+- **Model:** gemini-3.5-flash-lite
+- **Timestamp:** 2026-11-17T20:31:45+05:00
+
+## Run 1 — Weather
+
+**User request:** What is the current weather in Multan, Pakistan?
+
+**Validated output:**
+
+~~~json
+{
+  "answer": "The current weather in Multan, Pakistan is 23.3°C with clear skies (0% cloud cover), relative humidity at 30%, wind speed at 11.2 km/h from the east-northeast, and no precipitation.",
+  "tools_used": ["get_weather"],
+  "confidence": 1.0
+}
+~~~
+
+## Run 2 — Calculator
+
+**User request:** Calculate (235 * 17) + 918.
+
+**Validated output:**
+
+~~~json
+{
+  "answer": "4913",
+  "tools_used": ["calculate"],
+  "confidence": 1.0
+}
+~~~
+
+## Run 3 — SQLite notes
+
+**User request:** Save a note titled 'DawoodTech live demo' with content 'The agent loop executed on a live provider'.
+
+**Validated output:**
+
+~~~json
+{
+  "answer": "Successfully saved the note titled 'DawoodTech live demo'.",
+  "tools_used": ["save_note"],
+  "confidence": 1.0
+}
+~~~
+<!-- END GENERATED LIVE RUN LOGS -->
