@@ -1,0 +1,224 @@
+{
+  "run_type": "live_provider",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-11-17T20:38:02+05:00",
+  "total": 15,
+  "passed_expected_tool_check": 15,
+  "results": [
+    {
+      "id": 1,
+      "question": "What is the current weather in Multan, Pakistan?",
+      "expected_tools": [
+        "get_weather"
+      ],
+      "actual_tools": [
+        "get_weather"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "The current weather in Multan, Pakistan is clear with a temperature of 23.3°C, relative humidity of 30%, and wind speed of 11.2 km/h.",
+      "error": null
+    },
+    {
+      "id": 2,
+      "question": "Check the current weather in Lahore, Pakistan in Fahrenheit.",
+      "expected_tools": [
+        "get_weather"
+      ],
+      "actual_tools": [
+        "get_weather"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "The current weather in Lahore, Pakistan is 64.4°F with a relative humidity of 64%.",
+      "error": null
+    },
+    {
+      "id": 3,
+      "question": "Tell me the current weather for Islamabad, Pakistan.",
+      "expected_tools": [
+        "get_weather"
+      ],
+      "actual_tools": [
+        "get_weather"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "The current weather in Islamabad, Pakistan is clear with a temperature of 15.1°C (feels like 13.2°C), 51% relative humidity, and wind speeds of 4.5 km/h.",
+      "error": null
+    },
+    {
+      "id": 4,
+      "question": "Calculate 235 multiplied by 17, then add 918.",
+      "expected_tools": [
+        "calculate"
+      ],
+      "actual_tools": [
+        "calculate"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "The result of 235 multiplied by 17, plus 918, is 4913.",
+      "error": null
+    },
+    {
+      "id": 5,
+      "question": "Calculate (144 divided by 12) plus 7 squared.",
+      "expected_tools": [
+        "calculate"
+      ],
+      "actual_tools": [
+        "calculate"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "61",
+      "error": null
+    },
+    {
+      "id": 6,
+      "question": "Divide 500 by 8 and then add 12.5.",
+      "expected_tools": [
+        "calculate"
+      ],
+      "actual_tools": [
+        "calculate"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "75",
+      "error": null
+    },
+    {
+      "id": 7,
+      "question": "Save a note titled CS midterm with the content: Revise probability, AI search, and software engineering.",
+      "expected_tools": [
+        "save_note"
+      ],
+      "actual_tools": [
+        "save_note"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "Successfully saved note 'CS midterm'.",
+      "error": null
+    },
+    {
+      "id": 8,
+      "question": "Remember this note titled Search algorithms: BFS explores level by level and DFS explores depth first.",
+      "expected_tools": [
+        "save_note"
+      ],
+      "actual_tools": [
+        "save_note"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "I have successfully saved your note titled 'Search algorithms' with the content: 'BFS explores level by level and DFS explores depth first.'",
+      "error": null
+    },
+    {
+      "id": 9,
+      "question": "Store a note called Project meeting: Review the Week 1 agent loop and README.",
+      "expected_tools": [
+        "save_note"
+      ],
+      "actual_tools": [
+        "save_note"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "Successfully saved the note \"Project meeting\" with the content \"Review the Week 1 agent loop and README\".",
+      "error": null
+    },
+    {
+      "id": 10,
+      "question": "Find my saved note about BFS and DFS.",
+      "expected_tools": [
+        "search_notes"
+      ],
+      "actual_tools": [
+        "search_notes"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "Your note 'Search algorithms' covers BFS and DFS: 'BFS explores level by level and DFS explores depth first.'",
+      "error": null
+    },
+    {
+      "id": 11,
+      "question": "Search my notes for CS midterm revision.",
+      "expected_tools": [
+        "search_notes"
+      ],
+      "actual_tools": [
+        "search_notes"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "Found note 'CS midterm' with content: 'Revise probability, AI search, and software engineering.'",
+      "error": null
+    },
+    {
+      "id": 12,
+      "question": "What did I save about the project meeting?",
+      "expected_tools": [
+        "search_notes"
+      ],
+      "actual_tools": [
+        "search_notes"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "You saved a note titled 'Project meeting' with the content: 'Review the Week 1 agent loop and README'.",
+      "error": null
+    },
+    {
+      "id": 13,
+      "question": "What is the current weather in Multan and what is 7 multiplied by 8?",
+      "expected_tools": [
+        "get_weather",
+        "calculate"
+      ],
+      "actual_tools": [
+        "get_weather",
+        "calculate"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "The current temperature in Multan is 23.3°C with clear skies, and 7 multiplied by 8 is 56.",
+      "error": null
+    },
+    {
+      "id": 14,
+      "question": "Save a note titled Follow-up: Check the internship task deadline on 23 November 2026.",
+      "expected_tools": [
+        "save_note"
+      ],
+      "actual_tools": [
+        "save_note"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "I have successfully saved your note titled 'Follow-up' regarding the internship task deadline on 23 November 2026.",
+      "error": null
+    },
+    {
+      "id": 15,
+      "question": "Find my Search algorithms note and calculate 64 divided by 8.",
+      "expected_tools": [
+        "search_notes",
+        "calculate"
+      ],
+      "actual_tools": [
+        "search_notes",
+        "calculate"
+      ],
+      "passed_expected_tool_check": true,
+      "confidence": 1,
+      "answer": "Your Search algorithms note was found: 'BFS explores level by level and DFS explores depth first.' Also, 64 divided by 8 is 8.",
+      "error": null
+    }
+  ]
+}
