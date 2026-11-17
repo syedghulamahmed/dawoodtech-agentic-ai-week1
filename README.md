@@ -234,7 +234,7 @@ These scripts require a configured live provider. Reviewed evaluation, run-log, 
 - **Provider:** Google Gemini OpenAI-compatible API
 - **Model:** gemini-3.5-flash-lite
 - **Local automated tests:** 14 passed on the Windows environment.
-- **Live evaluation:** 15/15 expected-tool selection checks passed; no request errors were recorded. See tests/results.md.
+- **Live evaluation:** 15/15 expected-tool selection checks passed; no request errors were recorded. See tests/results.md and tests/results.json.
 - **Live tool demonstrations:** weather (get_weather), arithmetic (calculate), and note creation (save_note) completed through the model-driven agent loop. See logs/live_runs.md.
 - **Prompt comparison:** three system prompts were tested against the same BFS/DFS request. See docs/prompt-comparison-results.md.
 
