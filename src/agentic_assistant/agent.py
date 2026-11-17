@@ -92,4 +92,4 @@ def build_client(settings: Settings):
         from openai import OpenAI
     except ImportError as exc:
         raise RuntimeError("OpenAI SDK missing. Run uv sync.") from exc
-    return OpenAI(api_key=settings.api_key,base_url=settings.base_url,timeout=settings.timeout_seconds,max_retries=1)
+    return OpenAI(api_key=settings.api_key,base_url=settings.base_url,timeout=settings.timeout_seconds,max_retries=4)
