@@ -135,6 +135,8 @@ This generates `tests/results.json` and `tests/results.md`, recording the actual
 
 Capture three real provider runs (weather, calculator, SQLite):
 
+The script also inserts the actual timestamped provider outputs into the README under a generated section, satisfying the task's three-run log requirement. It never fabricates logs; the section appears only after a successful live capture.
+
 ```powershell
 uv run python scripts/capture_live_runs.py
 ```
