@@ -1,0 +1,19 @@
+"""Capture three actual Gemini/Ollama demonstrations."""
+from datetime import datetime
+from pathlib import Path
+from agentic_assistant.agent import Agent,build_client
+from agentic_assistant.cli import configure_logging
+from agentic_assistant.config import load_settings
+from agentic_assistant.tools import build_registry
+ROOT=Path(__file__).resolve().parents[1]
+def main():
+    settings=load_settings(); logger=configure_logging(settings.log_path)
+    agent=Agent(build_client(settings),settings,build_registry(settings.sqlite_path),logger)
+    runs=[("Weather","What is the current weather in Multan, Pakistan?"),("Calculator","Calculate (235 * 17) + 918."),("SQLite notes","Save a note titled 'DawoodTech live demo' with content 'The agent loop executed on a live provider'.")]
+    output=["# Live provider run logs","","> Actual runs against the configured provider. Keep this file free of keys and private notes.","",f"- Provider: `{settings.provider}`",f"- Model: `{settings.model}`",f"- Timestamp: `{datetime.now().astimezone().isoformat(timespec='seconds')}`",""]
+    for i,(label,prompt) in enumerate(runs,1):
+        print(f"\n[{i}/3] {label}: {prompt}"); summary=agent.run(prompt); print(summary.model_dump_json(indent=2))
+        output += [f"## Run {i} — {label}","",f"**User request:** {prompt}","","**Validated output:**","","```json",summary.model_dump_json(indent=2),"```",""]
+    path=ROOT/"logs"/"live_runs.md"; path.parent.mkdir(parents=True,exist_ok=True); path.write_text("\n".join(output),encoding="utf-8")
+    print(f"Saved actual provider outputs to {path.relative_to(ROOT)}"); return 0
+if __name__=="__main__": raise SystemExit(main())
