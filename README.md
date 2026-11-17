@@ -117,6 +117,10 @@ uv run agentic-assistant --demo
 
 This uses a deterministic mock provider to exercise calculator and SQLite flows. **It is not a live Gemini/Ollama inference and must not be presented as such.**
 
+## Week 1 learning notes
+
+The learning-phase summaries, workflows-versus-agents reading notes, Gemini OpenAI-compatibility feature notes, and ReAct reason/act/observe explanation are in [docs/learning-notes.md](docs/learning-notes.md). Detailed provider compatibility notes are in [docs/gemini-compatibility.md](docs/gemini-compatibility.md).
+
 ## Tests and live evidence
 
 Run unit tests:
