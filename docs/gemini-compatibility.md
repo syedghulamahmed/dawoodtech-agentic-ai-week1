@@ -4,7 +4,7 @@ The project uses the OpenAI Python SDK with Google's Gemini-compatible endpoint:
 
 https://generativelanguage.googleapis.com/v1beta/openai/
 
-The base URL, model, and key are configurable through environment variables. The code uses chat completions, messages, JSON-schema function tools, and tool-call IDs. Gemini requests set tool_choice to auto. The application executes tool calls in Python and sends observations back with the matching call ID.
+The base URL, model, and key are configurable through environment variables. The OpenAI client retries transient errors up to four times with the SDK's retry/backoff behavior. A persistent HTTP 503 is a provider-capacity issue; retries cannot guarantee availability, so temporarily try another stable model such as `gemini-3.5-flash-lite`. The code uses chat completions, messages, JSON-schema function tools, and tool-call IDs. Gemini requests set tool_choice to auto. The application executes tool calls in Python and sends observations back with the matching call ID.
 
 Ollama is supported through its OpenAI-compatible local endpoint. The implementation omits tool_choice for Ollama because its compatibility table does not list that field.
 
