@@ -36,7 +36,7 @@ def load_settings() -> Settings:
             "LLM_BASE_URL",
             "https://generativelanguage.googleapis.com/v1beta/openai/",
         ).strip()
-        model = os.getenv("LLM_MODEL", "gemini-3.8-flash").strip()
+        model = os.getenv("LLM_MODEL", "gemini-3.5-flash-lite").strip()
         api_key = (
             os.getenv("LLM_API_KEY")
             or os.getenv("GEMINI_API_KEY")
