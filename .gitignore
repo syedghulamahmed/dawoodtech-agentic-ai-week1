@@ -11,12 +11,6 @@ __pycache__/
 # Local databases and runtime output
 .data/
 logs/*.log
-logs/live_runs.md
-
-# Generated provider evidence: review manually before force-adding
-tests/results.json
-tests/results.md
-docs/prompt-comparison-results.md
 
 # OS files
 .DS_Store
