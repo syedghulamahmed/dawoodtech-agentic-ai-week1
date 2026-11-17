@@ -61,7 +61,7 @@ Set your private key in `.env`:
 LLM_PROVIDER=gemini
 LLM_API_KEY=YOUR_PRIVATE_GEMINI_KEY
 LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
-LLM_MODEL=gemini-3.8-flash
+LLM_MODEL=gemini-3.5-flash-lite
 ```
 
 Then run:
@@ -190,7 +190,7 @@ These scripts require a configured live provider. Generated result files are git
 | `LLM_API_KEY` | Private provider key | Required for Gemini |
 | `LLM_BASE_URL` | Gemini compatible endpoint | Google endpoint |
 | `OLLAMA_BASE_URL` | Local Ollama endpoint | `http://localhost:11434/v1` |
-| `LLM_MODEL` | Provider model | `gemini-3.8-flash` / `qwen3:4b` |
+| `LLM_MODEL` | Provider model | `gemini-3.5-flash-lite` / `qwen3:4b` |
 | `LLM_TEMPERATURE` | Sampling control | `0.2` |
 | `LLM_MAX_TOKENS` | Output token limit | `900` |
 | `MAX_AGENT_STEPS` | Agent loop bound | `6` |
@@ -205,6 +205,7 @@ These scripts require a configured live provider. Generated result files are git
 - Calculator parses a restricted AST and does not execute arbitrary Python.
 - SQLite uses parameterized SQL.
 - Network calls have timeouts.
+- The OpenAI client retries transient provider errors up to four times using its backoff policy; persistent HTTP 503 responses can still occur during provider-capacity incidents.
 - The OpenAI-compatible client retries transient provider failures up to four times; repeated 503 responses can still occur during Google service-capacity incidents.
 - The agent loop has a configurable maximum step count.
 - Final output is parsed and validated with Pydantic.
