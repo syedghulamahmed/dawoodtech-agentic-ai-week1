@@ -1,0 +1,17 @@
+[
+{"id":1,"question":"What is the current weather in Multan, Pakistan?","expected_tools":["get_weather"]},
+{"id":2,"question":"Check the current weather in Lahore, Pakistan in Fahrenheit.","expected_tools":["get_weather"]},
+{"id":3,"question":"Tell me the current weather for Islamabad, Pakistan.","expected_tools":["get_weather"]},
+{"id":4,"question":"Calculate 235 multiplied by 17, then add 918.","expected_tools":["calculate"]},
+{"id":5,"question":"Calculate (144 divided by 12) plus 7 squared.","expected_tools":["calculate"]},
+{"id":6,"question":"Divide 500 by 8 and then add 12.5.","expected_tools":["calculate"]},
+{"id":7,"question":"Save a note titled CS midterm with the content: Revise probability, AI search, and software engineering.","expected_tools":["save_note"]},
+{"id":8,"question":"Remember this note titled Search algorithms: BFS explores level by level and DFS explores depth first.","expected_tools":["save_note"]},
+{"id":9,"question":"Store a note called Project meeting: Review the Week 1 agent loop and README.","expected_tools":["save_note"]},
+{"id":10,"question":"Find my saved note about BFS and DFS.","expected_tools":["search_notes"]},
+{"id":11,"question":"Search my notes for CS midterm revision.","expected_tools":["search_notes"]},
+{"id":12,"question":"What did I save about the project meeting?","expected_tools":["search_notes"]},
+{"id":13,"question":"What is the current weather in Multan and what is 7 multiplied by 8?","expected_tools":["get_weather","calculate"]},
+{"id":14,"question":"Save a note titled Follow-up: Check the internship task deadline on 23 November 2026.","expected_tools":["save_note"]},
+{"id":15,"question":"Find my Search algorithms note and calculate 64 divided by 8.","expected_tools":["search_notes","calculate"]}
+]
