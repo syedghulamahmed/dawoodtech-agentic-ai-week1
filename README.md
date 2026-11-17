@@ -229,9 +229,9 @@ These scripts require a configured live provider. Reviewed evaluation, run-log, 
 - [x] Run all 15 live evaluation questions: **15/15 expected-tool checks passed** (tests/results.md).
 - [x] Run the three-prompt comparison and record observations (docs/prompt-comparison-results.md).
 - [x] Capture three real provider runs: weather, calculator, and SQLite notes (logs/live_runs.md).
-- [ ] Record a terminal demonstration with the API key hidden.
+- [x] Record a terminal demonstration with the API key hidden (41-second screen recording captured on 17 November 2026; submit the MP4 separately through TaskDesk).
 - [x] Publish source code and reviewed evidence in a public GitHub repository.
-- [ ] Submit the repository and demo video URLs through TaskDesk.
+- [ ] Submit the repository and demo video through TaskDesk and request supervisor approval.
 
 ## Verified live evidence — 17 November 2026
 
@@ -242,7 +242,7 @@ These scripts require a configured live provider. Reviewed evaluation, run-log, 
 - **Live tool demonstrations:** weather (get_weather), arithmetic (calculate), and note creation (save_note) completed through the model-driven agent loop. See logs/live_runs.md.
 - **Prompt comparison:** three system prompts were tested against the same BFS/DFS request. See docs/prompt-comparison-results.md.
 
-The 15/15 result measures expected tool selection, not comprehensive factual correctness. Review the recorded answers before relying on them. The screen-recorded demo and TaskDesk submission are still outstanding.
+The 15/15 result measures expected tool selection, not comprehensive factual correctness. Review the recorded answers before relying on them. A 41-second terminal screen recording demonstrating all three tools was captured on 17 November 2026; it is to be attached separately when completing the TaskDesk submission.
 
 <!-- BEGIN GENERATED LIVE RUN LOGS -->
 ## Live provider run logs
