@@ -1,5 +1,3 @@
-from openai import OpenAI
-
 from agentic_assistant.agent import build_client
 from agentic_assistant.cli import load_settings_for_demo
 
