@@ -205,6 +205,7 @@ These scripts require a configured live provider. Generated result files are git
 - Calculator parses a restricted AST and does not execute arbitrary Python.
 - SQLite uses parameterized SQL.
 - Network calls have timeouts.
+- The OpenAI-compatible client retries transient provider failures up to four times; repeated 503 responses can still occur during Google service-capacity incidents.
 - The agent loop has a configurable maximum step count.
 - Final output is parsed and validated with Pydantic.
 
