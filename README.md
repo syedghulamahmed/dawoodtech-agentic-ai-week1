@@ -1,4 +1,4 @@
-# Tool-Using Assistant — DawoodTech Agentic AI, Week 1
+# Agentic AI Assistant — DawoodTech Weeks 1 & 2
 
 A provider-switchable Python terminal assistant built around a **hand-written LLM agent loop**. The model selects tools, Python validates and executes them, observations return to the model, and the final response is validated with Pydantic.
 
@@ -295,3 +295,164 @@ The 15/15 result measures expected tool selection, not comprehensive factual cor
 }
 ~~~
 <!-- END GENERATED LIVE RUN LOGS -->
+
+
+---
+
+# Week 2 — Context, Memory and RAG
+
+The Week 2 extension adds a document-grounded assistant to the Week 1 agent project. It uses Gemini text embeddings, a persistent local Chroma collection, SQLite memory scoped by user ID, citation checks, refusal behavior, history compaction, and a Streamlit interface.
+
+## Week 2 architecture
+
+```mermaid
+flowchart TD
+  D[PDF / DOCX / TXT / MD] --> E[Text extraction]
+  E --> C[Chunking + source metadata]
+  C --> V[Gemini RETRIEVAL_DOCUMENT embeddings]
+  V --> DB[(Persistent Chroma)]
+  Q[User question] --> QE[Gemini RETRIEVAL_QUERY embedding]
+  QE --> R[Top-k cosine retrieval]
+  DB --> R
+  R --> P[Grounded prompt + source IDs]
+  M[(SQLite user memory)] --> P
+  H[Conversation history] --> T[Token budget check]
+  T -->|Over budget| S[Summarize older turns]
+  S --> P
+  T -->|Within budget| P
+  P --> L[Gemini chat model]
+  L --> A[JSON answer + citation IDs]
+  A --> X[Validate citation IDs]
+  X --> O[Answer with sources or refusal]
+```
+
+## What's implemented
+
+- **Document ingestion:** PDF, DOCX, TXT, and Markdown extraction; page/source metadata; deterministic overlapping chunk IDs.
+- **Persistent retrieval:** Chroma `PersistentClient`, cosine distance, Gemini `gemini-embedding-001`, `RETRIEVAL_DOCUMENT` for chunks and `RETRIEVAL_QUERY` for user searches.
+- **Grounded answers:** top-k retrieval, source IDs, filename/page/chunk citations, and a configurable similarity threshold.
+- **Refusal path:** refuses unsupported answers and rejects citations that do not correspond to retrieved source IDs.
+- **Long-term memory:** SQLite upsert/search/delete tools keyed by the application-provided user ID; the model-facing tool schema deliberately has no user-ID parameter.
+- **Context compaction:** token estimate, LLM summary for older messages, recent messages kept verbatim, and before/after token measurements.
+- **Simple UI:** Streamlit uploads, indexing, document chat, citation display, memory controls, and compaction metrics.
+- **Learning/evaluation material:** six sample documents, ten-sentence embedding exercise, twenty-question RAG test set, chunk-size evaluation script, and `AGENTS.md`.
+
+Retrieved documents and saved memories are treated as untrusted reference data, not instructions. The UI's editable user ID is only a local demonstration mechanism; a deployed multi-user service must obtain the user ID from authenticated server-side identity.
+
+## Week 2 setup — Windows PowerShell
+
+Open PowerShell in the project directory. Keep your existing private `.env` file and API key; do not overwrite it. Update dependencies:
+
+```powershell
+uv sync --extra dev
+```
+
+Ensure these Week 2 values exist in your local `.env`:
+
+```dotenv
+GEMINI_EMBEDDING_MODEL=gemini-embedding-001
+MAX_HISTORY_TOKENS=2200
+RAG_MIN_SIMILARITY=0.35
+```
+
+Your existing `LLM_API_KEY` must be a valid, private Gemini API key. The application does not read or print it in the UI.
+
+Index the six supplied sample files:
+
+```powershell
+uv run python scripts/ingest_samples.py
+```
+
+Launch the interface:
+
+```powershell
+uv run streamlit run app.py
+```
+
+Open the local Streamlit URL printed in the terminal. The sidebar can also index the sample documents or ingest your own PDF/DOCX/TXT/Markdown files. Image-only scanned PDFs are not OCR-processed and may yield no extractable text.
+
+## Week 2 exercises and evaluation
+
+Embed ten example sentences, find their most similar pair, and store/query them in a separate persistent Chroma collection:
+
+```powershell
+uv run python scripts/embed_ten_sentences.py
+```
+
+Run the twenty-question live RAG evaluation (fifteen answerable and five deliberately unanswerable questions):
+
+```powershell
+uv run python scripts/run_rag_eval.py
+```
+
+This writes actual retrieval, citation, refusal, and pass/review outcomes to `eval/results.csv`. Run the chunk-size comparison:
+
+```powershell
+uv run python scripts/compare_chunk_sizes.py
+```
+
+That script tests 500, 900, and 1400-character chunks against answerable evaluation questions and writes measured hit@5 results to `eval/chunk-size-results.md`. It uses temporary in-memory Chroma collections for each comparison, leaving the main persistent knowledge base unchanged.
+
+Run automated tests and lint:
+
+```powershell
+uv run pytest
+uv run ruff check .
+```
+
+## Chunk-size comparison table
+
+The comparison script calculates these overlaps (one-eighth of the chunk size, with a 50-character minimum). Actual chunk counts and hit@5 scores are deliberately left unreported until the live Gemini comparison has been run.
+
+| Chunk size (characters) | Overlap (characters) | Number of chunks | Expected-source hit@5 |
+|---:|---:|---:|---:|
+| 500 | 62 | Generated by script | Pending live measurement |
+| 900 | 112 | Generated by script | Pending live measurement |
+| 1400 | 175 | Generated by script | Pending live measurement |
+
+Do not submit guessed retrieval scores. Run `scripts/compare_chunk_sizes.py` and copy the measured results into this table (or link `eval/chunk-size-results.md`).
+
+## Week 2 project layout
+
+```text
+.
+├── AGENTS.md
+├── app.py
+├── examples/docs/                 # six safe sample source documents
+├── eval/
+│   └── questions.csv              # 20 answerable/unanswerable questions
+├── scripts/
+│   ├── embed_ten_sentences.py
+│   ├── ingest_samples.py
+│   ├── run_rag_eval.py
+│   └── compare_chunk_sizes.py
+├── src/agentic_assistant/
+│   ├── documents.py                # extract, chunk, and attach metadata
+│   ├── embeddings.py               # Gemini embedding adapter
+│   ├── vector_store.py             # persistent Chroma index
+│   ├── memory.py                   # per-user SQLite memory
+│   ├── context.py                  # token estimate and compaction
+│   └── rag.py                      # retrieval, citations and refusals
+├── tests/test_week2.py
+└── docs/week2-learning-notes.md
+```
+
+## Week 2 completion evidence
+
+- [x] Public GitHub repository extended from Week 1.
+- [x] Six sample documents and PDF/DOCX/TXT/Markdown ingestion implementation.
+- [x] Persistent Chroma index with source/page/chunk metadata.
+- [x] Gemini document/query embedding modes and ten-sentence exercise script.
+- [x] Grounded answer schema, citation-ID validation, and unsupported-answer refusal.
+- [x] User-keyed SQLite memory and bounded tool schemas.
+- [x] Conversation compaction implementation with before/after token measurements.
+- [x] Streamlit interface for indexing, chat, citations, and memory controls.
+- [x] Twenty-question evaluation CSV, including five unanswerable questions.
+- [x] Chunk-size comparison script and README result table.
+- [ ] Run Week 2 unit tests and lint on the target Windows environment.
+- [ ] Run live embeddings, ingest sample documents, and verify the Streamlit UI.
+- [ ] Produce actual twenty-question evaluation and chunk-size comparison results.
+- [ ] Record a screen demo showing ingestion, a cited answer, a refusal, memory, and compaction.
+- [ ] Submit repository and demo to TaskDesk and obtain supervisor approval.
+
+The repository contains the implementation and repeatable evaluation commands. Live Week 2 retrieval scores, runtime verification, and the screen recording are not claimed complete until they are produced and inspected.
