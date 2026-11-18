@@ -28,8 +28,8 @@ def compact_history(messages: Sequence[dict[str, Any]],
     if not summary:
         raise ValueError("The history summarizer returned an empty summary.")
     compacted = [{
-        "role": "system",
-        "content": "Compressed prior conversation. Preserve facts, decisions, constraints, and open tasks:\n" + summary[:5000],
+        "role": "assistant",
+        "content": "Conversation summary for continuity (older context): Preserve facts, decisions, constraints, and open tasks:\n" + summary[:5000],
     }, *recent]
     after = estimate_tokens(compacted)
     reduction = max(0.0, (before - after) / before * 100) if before else 0.0
