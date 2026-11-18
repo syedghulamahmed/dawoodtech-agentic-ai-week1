@@ -41,6 +41,10 @@ class DocumentAssistant:
         self.max_history_tokens, self.keep_recent_messages = max_history_tokens, keep_recent_messages
         self.min_similarity = min_similarity
 
+    def compact_conversation(self, history: list[dict[str, Any]]) -> dict[str, Any]:
+        """Summarize older turns while preserving the configured recent messages."""
+        return compact_history(history, self._summarize, self.keep_recent_messages)
+
     def _summarize(self, old):
         response = self.client.chat.completions.create(
             model=self.model,
@@ -59,9 +63,20 @@ class DocumentAssistant:
         if raw.lower().startswith("json"):
             raw = raw[4:].lstrip()
         try:
-            return RAGAnswer.model_validate_json(raw)
+            payload = json.loads(raw)
+            if isinstance(payload, dict):
+                if payload.get("refused") and not str(payload.get("answer", "")).strip():
+                    payload["answer"] = (
+                        "I couldn't find sufficient evidence in the indexed documents "
+                        "to answer that question."
+                    )
+                return RAGAnswer.model_validate(payload)
         except Exception:
-            return RAGAnswer(answer=raw or "No grounded answer was returned.", refused=True)
+            pass
+        return RAGAnswer(
+            answer="I couldn't verify a grounded answer from the indexed documents.",
+            refused=True,
+        )
 
     def ask(self, question: str, user_id: str = "local-user",
             history: list[dict[str, Any]] | None = None, top_k: int = 5) -> AssistantResult:
