@@ -21,7 +21,7 @@ def backend():
     settings = load_settings()
     if settings.provider != "gemini":
         raise RuntimeError("Week 2 embeddings currently require the Gemini API key; Ollama can still be used for Week 1.")
-    embedder = GeminiEmbeddings(settings.api_key)
+    embedder = GeminiEmbeddings(settings.api_key, model=os.getenv("GEMINI_EMBEDDING_MODEL", "gemini-embedding-001"))
     index = ChromaIndex(DATA / "chroma", embedder)
     memory = UserMemoryStore(DATA / "user-memory.db")
     assistant = DocumentAssistant(
