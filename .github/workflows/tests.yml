@@ -24,5 +24,7 @@ jobs:
         run: uv python install 3.12
       - name: Install project and development dependencies
         run: uv sync --python 3.12 --extra dev
+      - name: Run lint checks
+        run: uv run --python 3.12 ruff check .
       - name: Run automated tests
         run: uv run --python 3.12 pytest
