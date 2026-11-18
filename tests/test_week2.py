@@ -93,6 +93,17 @@ def make_assistant(tmp_path, content):
     client = SimpleNamespace(chat=SimpleNamespace(completions=FakeCompletions(content)))
     return DocumentAssistant(client, "fake-model", FakeIndex(), store), store, client
 
+def test_rag_formats_empty_json_refusal_as_readable_message(tmp_path):
+    assistant, _, _ = make_assistant(
+        tmp_path,
+        '{"answer":"","citations":[],"refused":true}',
+    )
+    result = assistant.ask("What is the population of Tokyo?", user_id="student-1")
+    assert result.answer.refused is True
+    assert result.answer.citations == []
+    assert "sufficient evidence" in result.answer.answer.lower()
+    assert not result.answer.answer.lstrip().startswith("{")
+
 def test_rag_validates_known_citations(tmp_path):
     assistant, _, _ = make_assistant(
         tmp_path,
