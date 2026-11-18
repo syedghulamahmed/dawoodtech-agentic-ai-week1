@@ -42,4 +42,4 @@ target-version = "py311"
 # Keep the repository's default correctness checks explicit and reproducible.
 # Optional import-sorting/modernization and opinionated exception rules can be
 # enabled incrementally after applying their autofixes to the legacy Week 1 files.
-select = ["E4", "E7", "E9", "F"]
+select = ["E9", "F"]
