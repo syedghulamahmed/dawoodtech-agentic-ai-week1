@@ -6,6 +6,7 @@ import uuid
 from pathlib import Path
 import streamlit as st
 from agentic_assistant.agent import build_client
+from agentic_assistant.context import estimate_tokens
 from agentic_assistant.config import load_settings
 from agentic_assistant.documents import load_and_chunk
 from agentic_assistant.embeddings import GeminiEmbeddings
@@ -115,6 +116,30 @@ def main():
             st.session_state.last_compaction = None
             st.rerun()
 
+        history_tokens = estimate_tokens(st.session_state.messages)
+        st.caption(
+            f"Conversation history: {history_tokens:,} estimated tokens / "
+            f"{assistant.max_history_tokens:,} token threshold."
+        )
+        can_compact = (
+            history_tokens > assistant.max_history_tokens
+            and len(st.session_state.messages) > assistant.keep_recent_messages
+        )
+        if st.button(
+            "Compact conversation history",
+            disabled=not can_compact,
+            use_container_width=True,
+        ):
+            try:
+                metric = assistant.compact_conversation(st.session_state.messages)
+                if metric["compacted"]:
+                    st.session_state.messages = metric["messages"]
+                    st.session_state.last_compaction = metric
+                    st.rerun()
+                st.info("Add more conversation history before compacting.")
+            except Exception as exc:
+                st.error(f"Compaction failed: {type(exc).__name__}: {exc}")
+
     if index.count() == 0:
         st.warning("Index the six sample documents or upload your own documents before asking document questions.")
 
@@ -143,9 +168,10 @@ def main():
                 except Exception as exc:
                     st.error(f"Request failed: {type(exc).__name__}: {exc}")
                     st.stop()
-            st.markdown(result.answer.answer)
             if result.answer.refused:
-                st.caption("Refused: evidence was insufficient or could not be verified.")
+                st.warning(result.answer.answer)
+            else:
+                st.markdown(result.answer.answer)
             if result.sources:
                 st.markdown("**Citations**")
                 for source in result.sources:
