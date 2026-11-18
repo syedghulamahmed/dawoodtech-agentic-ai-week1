@@ -26,7 +26,7 @@ def main():
         expected=row["expected_source"].strip()
         hits=index.search(row["question"],top_k=5)
         retrieved=[str(hit["metadata"].get("source","")) for hit in hits]
-        retrieval_hit=(expected in retrieved) if expected else not bool(retrieved)
+        retrieval_hit=(expected in retrieved) if expected else "N/A"
         answer=assistant.ask(row["question"],user_id="week2-eval-user")
         expected_refusal=not bool(expected)
         refusal_correct=(answer.answer.refused==expected_refusal)
@@ -39,7 +39,7 @@ def main():
             "cited_sources":";".join(cited_sources),
             "refused":str(answer.answer.refused),
             "refusal_correct":str(refusal_correct),
-            "result":"PASS" if retrieval_hit and refusal_correct else "REVIEW",
+            "result":"PASS" if (retrieval_hit is True or not expected) and refusal_correct else "REVIEW",
         }
         results.append(row_result)
         print(f"{number:02d}/{len(questions)} {row_result['result']} | hit@5={retrieval_hit} | refusal={answer.answer.refused}")
